@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import scipy.fftpack
 import soundfile as sf
 import sounddevice as sd
-
 from docx import Document
 from docx.shared import Inches
 from io import BytesIO
@@ -12,7 +11,6 @@ def plotAudio(Signal,Fs,TimeMargin=[0,0.02],fsize=2**8, axs=None):
     if axs is None:
         fig, axs = plt.subplots(2, 1, figsize=(10, 7))
     time = np.arange(0, len(Signal)) / Fs  
-    
     yf = scipy.fftpack.fft(Signal, fsize)
     magnitude = np.abs(yf[:fsize//2])  
     magnitude_db = 20 * np.log10(magnitude + 1e-10)
@@ -20,43 +18,37 @@ def plotAudio(Signal,Fs,TimeMargin=[0,0.02],fsize=2**8, axs=None):
     max_index = np.argmax(magnitude)  
     max_freq = freqs[max_index]  
     max_amplitude = magnitude_db[max_index]  
-
     axs[0].plot(time, Signal, label='Sygnał audio', color='blue')
     axs[0].set_xlabel('Czas (s)')
     axs[0].set_ylabel('Amplituda (db)')
     axs[0].set_xlim(TimeMargin)
     axs[0].legend()
-    
     axs[1].plot(freqs, magnitude_db, label='Widmo (dB)', color='red')
     axs[1].set_xlabel('Częstotliwość (Hz)')
     axs[1].set_ylabel('Amplituda (dB)')
     axs[1].legend()
-    
     if axs is None:
         plt.show()
     return max_freq, max_amplitude
 
-# Zad 1
+# Task 1
 
 data, fs = sf.read('sound1.wav', dtype='float32')
-
 sf.write('sound_L.wav', data[:, 0], fs)  
 sf.write('sound_R.wav', data[:, 1], fs)
 sf.write('sound_mix.wav', (data[:, 0] + data[:, 1]) / 2, fs) 
 
-# Zad 2
+# Task 2
 
 Signal, Fs = sf.read('sin_440Hz.wav', dtype=np.int32)
 plotAudio(Signal,Fs,TimeMargin=[0, 0.02])
 
-# Zad 3
+# Task 3
 
 document = Document()
 document.add_heading('Lab1', 0)
-
 files = ['sin_60Hz.wav', 'sin_440Hz.wav', 'sin_8000Hz.wav']
 fsize_values = [2**8, 2**12, 2**16]
-
 
 for file in files:
     document.add_heading('Plik - {}'.format(file),2)
