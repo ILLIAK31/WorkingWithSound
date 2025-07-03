@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.fftpack
 import soundfile as sf
-
 import sounddevice as sd
 
 from docx import Document
@@ -10,26 +9,8 @@ from docx.shared import Inches
 from io import BytesIO
 
 def plotAudio(Signal,Fs,TimeMargin=[0,0.02],fsize=2**8, axs=None):
-    # plt.figure() 
-    # plt.subplot(2,1,1) 
-    # plt.plot(np.arange(0,Signal.shape[0])/Fs,Signal) 
-    # plt.xlim(TimeMargin)
-    # plt.subplot(2,1,2)
-    # yf = scipy.fftpack.fft(Signal,fsize) 
-    # plt.plot(np.arange(0,Fs,1.0*Fs/(yf.size)),np.abs(yf)) 
-    # plt.show()
-    
-    # plt.figure() 
-    # plt.subplot(2,1,1) 
-    # plt.plot(np.arange(0,Signal.shape[0])/Fs,Signal) 
-    # plt.subplot(2,1,2) 
-    # yf = scipy.fftpack.fft(Signal,fsize) 
-    # plt.plot(np.arange(0,Fs/2,Fs/fsize),20*np.log10( np.abs(yf[:fsize//2]))) 
-    # plt.show()
-    
     if axs is None:
         fig, axs = plt.subplots(2, 1, figsize=(10, 7))
-    
     time = np.arange(0, len(Signal)) / Fs  
     
     yf = scipy.fftpack.fft(Signal, fsize)
